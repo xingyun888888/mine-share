@@ -1,0 +1,2 @@
+@import "./../../npm/wepy-nices/wepy-nices.wxss";
+.article-detail-container .article-title{text-align:center}.article-detail-container .article-content{box-sizing:border-box;width:100%;padding:20rpx;font-size:26rpx}.icon-star{font-size:28rpx;height:46rpx;line-height:46rpx}.icon-star image{width:46rpx;height:46rpx;vertical-align:middle}.other-info{padding:20rpx}

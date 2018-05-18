@@ -1,0 +1,109 @@
+<template>
+  <view class="article-detail-container">
+    <view class="article-title">
+      {{title}}
+    </view>
+    <view class="article-content">
+      <rich-text nodes="{{content}}"></rich-text>
+    </view>
+    <view class="other-info">
+      <nices :active.sync="active" :params.sync="params">
+        <view slot="icon" class="icon-star" bindtap="postLike"><image src="{{active==true?'/images/star-active.png':'/images/star.png'}}"/>{{starCount}}</view>
+      </nices>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy';
+
+  import nices from 'wepy-nices';
+
+  import api from '../../config/api'
+
+  export default class ArticleDetail extends  wepy.page{
+      config = {
+        navigationBarTitleText: '文章内容'
+      }
+
+      data = {
+        active:false,         //必填    状态 true 已点赞 false为点赞
+        params:{              //选填    动画效果配置
+          animate:'bounceIn', //选填    点赞图标动画
+          activeColor:'#999',  //选填    已点赞图标颜色
+          color:'#999',       //选填    未点赞图标颜色
+          enableCancel:true   //选填    是否可取消点赞
+        },
+        starCount:1,
+        id:"",
+        title:"",
+        content:""
+      }
+      components = {nices}
+      methods = {
+        postLike(e){
+          if(!this.active){
+            this.starCount++;
+          }else{
+            this.starCount--;
+          }
+        },
+        onShareAppMessage: function (res) {
+          return {
+            title:this.title,
+            path: '/pages/article/detail?id='+this.id,
+            //imageUrl:this.courseDetail&&(this.courseDetail.coverOss?this.courseDetail.coverOss:""),
+            success: function(res) {
+              // 转发成功
+            },
+            fail: function(res) {
+              // 转发失败
+            }
+          }
+        },
+      }
+
+      onLoad(option){
+          let self = this;
+          this.id = option.id;
+          wepy.request({
+              url:api.articleById,
+              method:'get',
+              data:{
+                 id:option.id
+              },
+              success:function(res){
+                  console.dir(res);
+                 self.title = res.data.title;
+                 self.content = res.data.content;
+                 self.$apply();
+              }
+          })
+      }
+  }
+</script>
+<style lang="less">
+   .article-detail-container{
+     .article-title{
+       text-align:center;
+     }
+     .article-content{
+       box-sizing: border-box;
+       width:100%;
+       padding:20rpx;
+       font-size:26rpx;
+     }
+   }
+   .icon-star{
+     font-size:28rpx;
+     height:46rpx;
+     line-height:46rpx;
+     image{
+       width:46rpx;
+       height:46rpx;
+       vertical-align:middle;
+     }
+   }
+   .other-info{
+     padding:20rpx;
+   }
+</style>

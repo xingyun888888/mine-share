@@ -1,0 +1,1 @@
+.article-container{width:100%}.article-container .article-list{padding:20rpx;font-size:24rpx;height:40rpx;line-height:40rpx;border-bottom:1px solid #f2f2f2}.article-container .article-list .article-date{float:right}.article-container .article-list .article-author{margin-right:24rpx;float:right}

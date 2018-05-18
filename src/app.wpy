@@ -1,0 +1,78 @@
+<style lang="less">
+  .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+</style>
+
+<script>
+
+import wepy from 'wepy'
+
+import 'wepy-async-function'
+
+export default class extends wepy.app {
+  config = {
+    pages: [
+      'pages/index',
+      'pages/article/index',
+      'pages/article/detail'
+    ],
+    window: {
+      backgroundTextStyle: '#9A32CD',
+      navigationBarBackgroundColor: '#9A32CD',
+      navigationBarTitleText: 'WeChat',
+      navigationBarTextStyle: 'white'
+    },
+    tabBar: {
+      color: "#333",
+      selectedColor: "#9A32CD",
+      backgroundColor: "#f2f2f2",
+      borderStyle: "#fff",
+      list: [
+        {
+          pagePath: "pages/index",
+          text: "首页",
+          iconPath: "images/tab_home.png",
+          selectedIconPath: "images/tab_home_press.png"
+        },
+        {
+          pagePath: "pages/article/index",
+          text: "文章",
+          iconPath: "images/tab_article.png",
+          selectedIconPath: "images/tab_article_press.png"
+        }]
+    }
+  }
+  globalData = {
+    userInfo: null
+  }
+
+  constructor () {
+    super()
+    this.use('requestfix')
+  }
+  onLaunch() {
+    this.testAsync()
+  }
+  async testAsync () {
+  }
+  getUserInfo(cb) {
+    const that = this;
+    if (this.globalData.userInfo) {
+      return this.globalData.userInfo
+    }
+    wepy.getUserInfo({
+      success (res) {
+        console.dir(res);
+        that.globalData.userInfo = res.userInfo
+        cb && cb(res.userInfo)
+      }
+    })
+  }
+}
+</script>

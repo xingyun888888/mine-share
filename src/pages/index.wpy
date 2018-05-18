@@ -1,0 +1,127 @@
+<style lang="less">
+
+  .userinfo {
+    display: flex;
+    margin-top:100rpx;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .userinfo-avatar {
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: 50%;
+  }
+
+  .userinfo-nickname {
+    color: #aaa;
+  }
+  .make-phone{
+    font-size:25rpx;
+    display:inline-block;
+    text-align: center;
+    border-radius:20rpx;
+    width:250rpx;
+    margin-top:50rpx;
+    height:40rpx;
+    line-height:40rpx;
+    background: #e4393c;
+    color:#fff;
+  }
+
+</style>
+<template>
+  <view class="container">
+    <!--<view class="userinfo" @tap="handleViewTap">-->
+      <!--<image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>-->
+      <!--<view class="userinfo-nickname">{{ userInfo.nickName }}</view>-->
+    <!--</view>-->
+    <!--<view bindtap="makePhone" >{{networkType}}</view>-->
+    <web-view src="http://smile.adding360.com"></web-view>
+  </view>
+</template>
+<script>
+
+  import wepy from 'wepy'
+  import api from "../config/api"
+  var wxDraw = require("./../utils/wxdraw.min.js").wxDraw;
+  var Shape = require("./../utils/wxdraw.min.js").Shape;
+
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: 'mine分享'
+    }
+    components = {
+    }
+    data = {
+      wxCanvas:null, //    需要创建一个对象来接受wxDraw对象
+      nodes:"",
+      userInfo: {
+        nickName: '加载中...'
+      },
+      networkType:""
+    }
+
+    computed = {
+    }
+
+    methods = {
+      makePhone(e){
+        wx.makePhoneCall({
+          phoneNumber:"33333333"
+        })
+      }
+    }
+
+    events = {
+    }
+
+    onShow(){
+
+    }
+
+    onLoad() {
+      let self = this
+      // 打开调试
+      wx.setEnableDebug({
+        enableDebug: true
+      })
+      this.$parent.getUserInfo(function(userInfo) {
+        if (userInfo) {
+          self.userInfo = userInfo
+        }
+
+        self.$apply()
+      })
+
+      wepy.request({
+          url:api.articleList,
+          success:function(res){
+            console.log(res);
+            console.log(res.data.data[0].content);
+            self.notes = res.data.data[0].content;
+            self.$apply();
+          }
+        }
+      )
+
+      wx.getNetworkType({
+        success: function(res) {
+          // 返回网络类型, 有效值：
+          // wifi/2g/3g/4g/unknown(Android下不常见的网络类型)/none(无网络)
+          var networkType = res.networkType;
+          switch(networkType){
+            case "wifi":
+                 self.networkType = "wifi网络";
+                 break;
+            case "4g":
+                 self.networkType = "4g网络";
+                 break;
+            default: self.networkType = "无网络";
+          }
+
+        }
+      })
+    }
+  }
+</script>

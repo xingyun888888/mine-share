@@ -1,0 +1,86 @@
+<template>
+  <view class="article-container">
+    <block wx:for="{{list}}" wx:key="{{index}}">
+       <view class="article-list"  bindtap="goDetail" data-id="{{item.id}}">
+         {{item.title}}
+         <view class="article-date">{{item.update_time}}</view>
+         <view class="article-author">{{item.author}}</view>
+       </view>
+    </block>
+  </view>
+</template>
+<script>
+   import wepy from 'wepy';
+
+   import api from "../../config/api"
+
+   export default class ArticleIndex extends wepy.page{
+       config = {
+         navigationBarTitleText: '文章列表',
+         enablePullDownRefresh:true
+       }
+
+       data = {
+          list:null
+       }
+
+       onPullDownRefresh(){
+         console.log("调用下拉刷新");
+         wx.stopPullDownRefresh();
+         let self = this;
+         wepy.request({
+           url:api.articleList,
+           method:"get",
+           success:function(res){
+             self.list = res.data.data;
+             self.$apply();
+             wx.vibrateShort({});
+           }
+         })
+       }
+
+       methods = {
+         goDetail(e){
+           this.$navigate({url:"detail?id="+e.currentTarget.dataset.id});
+         }
+       }
+
+       onLoad(){
+         // 打开调试
+         wx.setEnableDebug({
+           enableDebug: true
+         })
+         let self = this;
+          wepy.request({
+              url:api.articleList,
+              method:"get",
+              success:function(res){
+                  self.list = res.data.data;
+                  self.$apply();
+
+              }
+
+          })
+       }
+   }
+
+</script>
+<style lang="less">
+  .article-container{
+    width:100%;
+    .article-list{
+      padding:20rpx;
+      font-size:24rpx;
+      height:40rpx;
+      line-height:40rpx;
+      border-bottom:1px solid #f2f2f2;
+      .article-date{
+        float:right;
+      }
+      .article-author{
+        margin-right:24rpx;
+        float:right;
+      }
+    }
+  }
+</style>

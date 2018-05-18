@@ -1,0 +1,1 @@
+.userinfo{display:flex;margin-top:100rpx;flex-direction:column;align-items:center}.userinfo-avatar{width:80rpx;height:80rpx;border-radius:50%}.userinfo-nickname{color:#aaa}.make-phone{font-size:25rpx;display:inline-block;text-align:center;border-radius:20rpx;width:250rpx;margin-top:50rpx;height:40rpx;line-height:40rpx;background:#e4393c;color:#fff}

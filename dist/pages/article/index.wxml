@@ -1,0 +1,10 @@
+
+  <view class="article-container">
+    <block  wx:for="{{list}}" wx:key="{{index}}">
+       <view class="article-list" bindtap="goDetail" data-id="{{item.id}}">
+         {{item.title}}
+         <view class="article-date">{{item.update_time}}</view>
+         <view class="article-author">{{item.author}}</view>
+       </view>
+    </block>
+  </view>

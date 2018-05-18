@@ -1,0 +1,9 @@
+
+  <view class="container">
+    <!--<view class="userinfo" bindtap="handleViewTap">-->
+      <!--<image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>-->
+      <!--<view class="userinfo-nickname">{{ userInfo.nickName }}</view>-->
+    <!--</view>-->
+    <!--<view bindtap="makePhone" >{{networkType}}</view>-->
+    <web-view src="http://smile.adding360.com"/>
+  </view>
